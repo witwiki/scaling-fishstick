@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 fn main() {
     
     // Var Types
@@ -70,22 +72,133 @@ fn main() {
     println!("{} {}", brd.can_fly(), brd.is_animal());
 
 
+    // Enum
+    let u: MyEnum = MyEnum::A;
+    let v: MyEnum = MyEnum::B(5);
+    let w: MyEnum = MyEnum::C { x: 10, y: 20 };
+    println!("{:?}", u);
+    println!("{:?}", v);
+    println!("{:?}", w);
+
+    if let MyEnum::B(val) = v {
+        println!("{}", val);
+    }
+
+    if let MyEnum::C { x, y } = w {
+        println!("{} {}", x, y);
+    }
+
+
+    // Vector (Dynamic Arrays default in stdlib of rust)\
+    let mut vec: Vec<i64> = vec![1, 2, 3, 4, 5];
+    println!("+++ vec below +++");
+    println!("{:?}", vec);
+    vec.len();
+    println!("{:?}", vec.len());
+    vec[0];
+    println!("{:?}", vec[0]);
+    vec.push(7);
+    println!("{:?}", vec);
+    vec.remove(0);
+    println!("{:?}", vec);
+
+    // Hash Map (Common data structure)
+    let mut map = HashMap::new();
+
+    map.insert(0, "Hi");
+    map.insert(1, "Hi again");
+    println!("{:?}", map);
+
+    match map.get(&0) {         // have to reference the index/address of the value in a Hashmap in basic methods
+        Some(str1) => println!("{}", str1),
+        None => println!("Doesn't exist in map"),
+    }
+
+    match map.get(&2) {
+        Some(str2) => println!("{}", str2),
+        _ => println!("Doesn't exist in map"),       
+    }
+
+    map.remove(&0);     // have to reference the index/address of the value in a Hashmap in basic methods
+    println!("{:?}", map);
+
+
+    // // Options in a nutshell
+    let divide1: Option<i32> = divide(4, 2);
+    let divide2: Option<i32> = divide(2, 3);
+
+    // Unwrapping a 'Some' variant will extract the value wrapped
+    println!("{:?} unwraps to {}", divide1, divide1.unwrap());
+
+    // Unwrapping a 'None' variant will 'panic!'
+    println!("{:?} unwraps to {}", divide2, divide2.unwrap());
+
+
+    // // Results in a nutshell
+    let div = div(4,2);
+    // let res = div.expect("we crashed");
+
+    // method 1
+    match div {
+        Ok(v) => println!("{}", v),
+        Err(v) => println!("{:?}", v)        
+    }
+    // // method 2
+    // if div.is_ok() {
+    //     println!("{}", div.unwrap());
+    // }
+    // // method 3a
+    // println!("{}", div.unwrap());
+    // // method 3b
+    // println!("{}", div.unwrap_or(100));     // kinda like a try/catch/expect where it returns 100 in this case if not unwrapped
+    // // method 4
+    // println!("{}", res);
+
+
+}
+
+
+// // Results in a nutshell
+// Err, an enum containing error code
+// Ok(value), a wrapper that contains a value
+fn div(d1: i32, d2: i32) -> Result<i32, MyError> {
+    if d1 % d2 != 0 {
+        Err(MyError::Error1)
+    } else {
+        Ok(d1 / d2)
+    }
+}
+
+#[derive(Debug)]
+enum MyError {
+    Error1
 }
 
 
 
+
+// // Options in a nutshell
+// 'None', to indicate failure or lack of value, and
+// 'Some(value)', a tuple struct that wraps a value with type T.
+fn divide(divid: i32, divis: i32) -> Option<i32> {
+    if divid % divis != 0 {
+        None
+    } else {
+        Some(divid / divis)
+    }
+}
+
+
+
+
+
 // Enum
-
-
-
-
-
-
-
-
-
-
-
+#[derive(Debug)]        // telling compiler how we are printing our data structure
+enum MyEnum {
+    A,
+    B(i32),
+    C {x: i32, y: i32}    // a struct
+}
 
 
 // Traits (these are interfaces. There's no support for OOP, instead interfaces are used which are called Traits)
