@@ -28,9 +28,10 @@ pub fn process_instruction(
     instruction_data: &[u8], // Ignored, all helloworld instructions are hellos
 ) -> ProgramResult {
     msg!("Hello World Rust program entrypoint");
+    msg!("Instruction data: {:?}", instruction_data);           // solana logs for onchain code debugging
 
     let instruction = HelloInstruction::unpack(instruction_data)?;
-
+    msg!("Instruction: {:?}", instruction);
     // Iterating accounts is safer than indexing
     let accounts_iter = &mut accounts.iter();
 
